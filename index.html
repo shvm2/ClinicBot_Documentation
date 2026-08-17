@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08111f">
+  <title>ClinicBot — WhatsApp Business Automation Platform</title>
+  <meta name="description" content="ClinicBot is a configurable WhatsApp Business automation platform built with FastAPI and Meta's WhatsApp Cloud API.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="#top" aria-label="ClinicBot home">
+        <span class="brand-mark">C</span>
+        <span>ClinicBot</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#overview">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#demo">Demo</a>
+        <a href="#engineering">Engineering</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+      <a class="nav-cta" href="mailto:ucannotdefeattesla@gmail.com?subject=ClinicBot%20Project">Discuss the project <span>↗</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="dot"></span> Independent software project</div>
+        <h1>ClinicBot<span class="accent">.</span></h1>
+        <p class="hero-subtitle">Configurable WhatsApp Business Automation Platform</p>
+        <p class="hero-body">A reusable backend for appointment workflows, business enquiries and conversational interactions over WhatsApp, built on Meta's official Cloud API.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#architecture">View architecture <span>↓</span></a>
+          <a class="btn btn-secondary" href="#overview">View project details <span>↘</span></a>
+        </div>
+        <div class="hero-meta">
+          <span>Python</span><span>FastAPI</span><span>Meta Cloud API</span><span>SQLAlchemy</span><span>Pytest</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="ClinicBot WhatsApp conversation preview">
+        <div class="phone-glow"></div>
+        <div class="phone">
+          <div class="phone-top">
+            <div class="wa-avatar">S</div>
+            <div>
+              <strong>Smile Care Dental Clinic</strong>
+              <small>ClinicBot · online</small>
+            </div>
+            <span class="phone-more">•••</span>
+          </div>
+          <div class="chat-bg">
+            <div class="date-chip">TODAY</div>
+            <div class="bubble bot">
+              <div class="bubble-title">ClinicBot</div>
+              Welcome to Smile Care Dental Clinic! 🦷<br>
+              How can we help you today?<br><br>
+              Reply <strong>Start</strong> to begin.
+              <span class="bubble-time">10:41</span>
+            </div>
+            <div class="bubble user">Start <span class="bubble-time">10:42 ✓✓</span></div>
+            <div class="bubble bot">
+              <div class="bubble-title">Main Menu</div>
+              Welcome to Smile Care Dental Clinic. How can we help you today?
+              <span class="bubble-time">10:42</span>
+            </div>
+            <div class="wa-buttons">
+              <span>Book Appointment</span>
+              <span>Our Services</span>
+              <span>Timing &amp; Location</span>
+            </div>
+            <div class="bubble bot compact">
+              Please choose a slot for your appointment:
+              <div class="slot-preview"><span>Morning (9AM–12PM)</span><span>Afternoon (12PM–4PM)</span><span>Evening (4PM–7PM)</span></div>
+              <span class="bubble-time">10:43</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" class="section-shell section-pad">
+      <div class="section-intro">
+        <div>
+          <div class="section-kicker">01 / Overview</div>
+          <h2>Not just a chatbot.</h2>
+        </div>
+        <p>ClinicBot was built as a reusable automation backend: conversation state, API integration, persistence and business configuration are separated instead of being tied together in one-off message handlers.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card featured-stat"><div class="stat-num">74</div><div class="stat-label">automated tests passing</div><div class="stat-note">State machine, services, APIs and client</div></div>
+        <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">core layers</div><div class="stat-note">HTTP → services → repositories → models → database</div></div>
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">configuration-driven engine</div><div class="stat-note">Business identity and message copy live outside core logic</div></div>
+        <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">third-party chatbot platforms</div><div class="stat-note">Direct Meta Cloud API integration</div></div>
+      </div>
+
+      <div class="capabilities-grid">
+        <article class="capability">
+          <div class="icon-box">↗</div>
+          <h3>Conversation engine</h3>
+          <p>Finite-state conversational flow for welcome, menu selection, slot selection, data collection and appointment confirmation.</p>
+        </article>
+        <article class="capability">
+          <div class="icon-box">⌁</div>
+          <h3>WhatsApp integration</h3>
+          <p>Webhook verification, inbound message handling and outbound text, buttons, lists and template messages through Meta's Cloud API.</p>
+        </article>
+        <article class="capability">
+          <div class="icon-box">▤</div>
+          <h3>Persistence</h3>
+          <p>Conversation and appointment data are persisted through SQLAlchemy repositories with Alembic migrations.</p>
+        </article>
+        <article class="capability">
+          <div class="icon-box">◈</div>
+          <h3>Configuration</h3>
+          <p>Clinic identity, services and response copy are externalized so the underlying conversation engine can be adapted without rewriting core logic.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture" class="section-shell section-pad architecture-section">
+      <div class="section-intro centered">
+        <div>
+          <div class="section-kicker">02 / Architecture</div>
+          <h2>Designed around separation of concerns.</h2>
+        </div>
+        <p>The state machine stays independent of the database and WhatsApp API. Side effects are orchestrated by services; storage is isolated behind repositories.</p>
+      </div>
+
+      <div class="architecture-card">
+        <div class="arch-column transport">
+          <div class="arch-node"><span>01</span><strong>Meta WhatsApp Cloud API</strong><small>messages · webhooks</small></div>
+          <div class="connector vertical"></div>
+          <div class="arch-node"><span>02</span><strong>FastAPI Webhook</strong><small>HTTP transport</small></div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-column logic">
+          <div class="arch-node featured-node"><span>03</span><strong>Conversation Service</strong><small>orchestration</small></div>
+          <div class="connector split"></div>
+          <div class="split-row">
+            <div class="arch-node"><span>04</span><strong>Finite State Machine</strong><small>pure, testable handlers</small></div>
+            <div class="arch-node"><span>05</span><strong>WhatsApp Client</strong><small>outbound commands</small></div>
+          </div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-column data">
+          <div class="arch-node"><span>06</span><strong>Repository Layer</strong><small>data access boundary</small></div>
+          <div class="connector vertical"></div>
+          <div class="arch-node"><span>07</span><strong>SQLAlchemy Models + Database</strong><small>conversations · appointments · business</small></div>
+        </div>
+      </div>
+
+      <div class="architecture-footnote">
+        <span class="line"></span>
+        <p><strong>Configuration sits beside the core.</strong> Clinic details are loaded from JSON and reply templates are externalized from business logic.</p>
+      </div>
+    </section>
+
+    <section id="demo" class="section-shell section-pad demo-section">
+      <div class="section-intro">
+        <div>
+          <div class="section-kicker">03 / Demo</div>
+          <h2>See the workflow in action.</h2>
+        </div>
+        <p>The current demonstration runs on Meta's WhatsApp Cloud API test environment, so the public page shows the working flow rather than exposing a live public number.</p>
+      </div>
+
+      <div class="demo-grid">
+        <div class="demo-video-card">
+          <div class="video-frame">
+            <video
+              class="clinicbot-demo-video"
+              controls
+              playsinline
+              preload="metadata"
+              aria-label="ClinicBot WhatsApp appointment workflow demo"
+            >
+              <source src="assets/clinicbot-demo.mp4" type="video/mp4">
+              Your browser does not support HTML5 video.
+              <a href="assets/clinicbot-demo.mp4">Open the ClinicBot demo video.</a>
+            </video>
+
+            <div class="video-missing-message" hidden>
+              <div class="play-button">▶</div>
+              <div class="video-label">CLINICBOT DEMO VIDEO</div>
+              <p>Place your recording at <code>assets/clinicbot-demo.mp4</code> and reload this page.</p>
+            </div>
+          </div>
+        </div>
+        <div class="demo-notes">
+          <div class="note-pill">Meta test environment</div>
+          <h3>The public demo is intentionally honest.</h3>
+          <p>Because the current bot uses Meta's provided test number, strangers cannot start a conversation with it. The landing page therefore makes the system observable without pretending there is a public production number.</p>
+          <div class="flow-mini">
+            <div><b>01</b><span>Customer opens WhatsApp</span></div>
+            <div><b>02</b><span>Bot presents menu</span></div>
+            <div><b>03</b><span>Customer chooses slot</span></div>
+            <div><b>04</b><span>Name / phone / date captured</span></div>
+            <div><b>05</b><span>Appointment request persisted</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="engineering" class="section-shell section-pad engineering-section">
+      <div class="section-intro centered">
+        <div>
+          <div class="section-kicker">04 / Engineering</div>
+          <h2>Built as a backend system first.</h2>
+        </div>
+        <p>The project intentionally avoids a heavy chatbot framework. The core uses straightforward Python, explicit state transitions and clear boundaries between layers.</p>
+      </div>
+
+      <div class="engineering-grid">
+        <div class="stack-card">
+          <div class="stack-top"><span>Core stack</span><span class="mini-dot"></span></div>
+          <div class="tech-list">
+            <span>Python 3.12+</span><span>FastAPI</span><span>Pydantic v2</span><span>SQLAlchemy 2.0</span><span>Alembic</span><span>Pytest</span><span>Meta WhatsApp Cloud API</span>
+          </div>
+        </div>
+        <div class="principles-card">
+          <div class="principle"><span>01</span><div><strong>Pure state machine</strong><p>Handlers return data describing the next state and desired replies; they don't touch the DB or WhatsApp client.</p></div></div>
+          <div class="principle"><span>02</span><div><strong>Repository boundary</strong><p>Storage is isolated so the persistence layer can evolve without rewriting conversation logic.</p></div></div>
+          <div class="principle"><span>03</span><div><strong>Configuration as data</strong><p>Clinic identity and message templates are externalized from the Python implementation.</p></div></div>
+        </div>
+      </div>
+
+      <div class="test-callout">
+        <div class="test-number">74</div>
+        <div><strong>Automated tests passing</strong><p>Coverage includes state transitions, conversation flows, API behavior, validation utilities and the WhatsApp client.</p></div>
+      </div>
+    </section>
+
+    <section class="section-shell section-pad why-section">
+      <div class="why-card">
+        <div>
+          <div class="section-kicker">05 / Why I built it</div>
+          <h2>I wanted to build the automation engine, not just a scripted bot.</h2>
+        </div>
+        <p>I built ClinicBot to explore what it takes to turn a WhatsApp workflow into a reusable backend system. The goal was to keep conversational logic, persistence and platform integration separate so the same underlying engine could be adapted to different appointment-based businesses through configuration.</p>
+      </div>
+    </section>
+
+    <section class="section-shell section-pad project-status">
+      <div class="status-panel">
+        <div class="status-badge"><span class="status-dot"></span> Project status</div>
+        <h2>Private code. Public case study.</h2>
+        <p>The source repository is intentionally private. The public-facing site documents the architecture, engineering decisions and working demo without exposing application credentials, stored data or implementation details.</p>
+        <div class="status-actions">
+          <a class="btn btn-primary" href="mailto:ucannotdefeattesla@gmail.com?subject=ClinicBot%20Technical%20Review">Request technical review <span>↗</span></a>
+          <a class="btn btn-secondary" href="privacy.html">Read privacy policy <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell section-pad footer-cta">
+      <div class="footer-cta-inner">
+        <div>
+          <div class="section-kicker">Built independently</div>
+          <h2>ClinicBot is one of the systems I use to explore practical backend and automation engineering.</h2>
+        </div>
+        <div class="footer-links">
+          <a href="https://byte-shell.vercel.app/" target="_blank" rel="noreferrer">Portfolio ↗</a>
+          <a href="privacy.html">Privacy policy →</a>
+          <a href="mailto:ucannotdefeattesla@gmail.com">Email →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-shell footer-row">
+      <span>© 2026 ClinicBot</span>
+      <span>Project case study by Shivam Singh</span>
+      <a href="privacy.html">Privacy policy</a>
+    </div>
+  </footer>
+  <script>
+    const demoVideo = document.querySelector('.clinicbot-demo-video');
+    const missingMessage = document.querySelector('.video-missing-message');
+
+    if (demoVideo && missingMessage) {
+      demoVideo.addEventListener('error', () => {
+        demoVideo.hidden = true;
+        missingMessage.hidden = false;
+      });
+    }
+  </script>
+</body>
+</html>
